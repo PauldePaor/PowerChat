@@ -1,7 +1,7 @@
 
-public class Backend {
+public class Client {
 
-	public Backend() {
+	public Client() {
 		// TODO Auto-generated constructor stub
 	}
 
