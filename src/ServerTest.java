@@ -1,6 +1,6 @@
 import javax.swing.JFrame;
-public class ServerGUI {
-	public ServerGUI() {
+public class ServerTest {
+	public ServerTest() {
 		
 	}
 	
