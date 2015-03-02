@@ -6,6 +6,7 @@ import javax.swing.*;
 
 public class Server extends JFrame{
 	
+	private static final long serialVersionUID = 1L;
 	private JTextField userText;
 	private JTextArea chatWindow;
 	private ObjectOutputStream output;
