@@ -15,6 +15,7 @@ public class Client extends JFrame{
 	private String message = "";
 	private String serverIP;
 	private Socket connection;
+	public String userName = "";
 	
 	public Client(String host){
 		super("PowerChat Client");
@@ -24,7 +25,7 @@ public class Client extends JFrame{
 		userText.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent event){
-					sendMessage(event.getActionCommand());
+					sendMessage(event.getActionCommand(),host);
 					userText.setText("");
 				}
 			  }
@@ -44,7 +45,7 @@ public class Client extends JFrame{
 			setupStreams();
 			whileChatting();
 		}catch(EOFException eofException){
-			showMessage("\n Client terminated connection");		
+			showMessage("\nClient terminated connection");		
 		}catch(IOException ioException){
 			ioException.printStackTrace();
 		}finally{
@@ -64,7 +65,7 @@ public class Client extends JFrame{
 		output = new ObjectOutputStream(connection.getOutputStream());
 		output.flush();
 		input = new ObjectInputStream(connection.getInputStream());
-		showMessage("\n Your streams are good to go! \n");
+		showMessage("\nYour streams are good to go! \n");
 	}
 	
 	//while chatting with server
@@ -75,14 +76,14 @@ public class Client extends JFrame{
 				message = (String) input.readObject();
 				showMessage("\n" + message);
 			}catch(ClassNotFoundException classNotFoundException){
-				showMessage("\n I don't know that object type...bitch");
+				showMessage("\nI don't know that object type...bitch");
 			}
 		}while(!message.equals("SERVER - END"));
 	}
 	
 	//close the streams
 	private void closeCrap(){
-		showMessage("\n Closing shit down...");
+		showMessage("\nClosing connections down...");
 		ableToType(false);
 		try{
 			output.close();
@@ -92,15 +93,16 @@ public class Client extends JFrame{
 			ioException.printStackTrace();
 		}
 	}
-	
+
 	//send messages to server
-	private void sendMessage(String message){
+	private void sendMessage(String message, String userName){
 		try{
-			output.writeObject("CLIENT - " + message);
+			userName = ClientTest.getUserName();
+			output.writeObject(userName + " - " + message);
 			output.flush();
-			showMessage("\nCLIENT - " + message);
+			showMessage("\n" + userName + " - " + message);
 		}catch(IOException ioException){
-			chatWindow.append("\n Something went wrong sending the message");
+			chatWindow.append("\nSomething went wrong sending the message");
 		}
 	}
 	

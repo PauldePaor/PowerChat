@@ -44,7 +44,7 @@ public class Server extends JFrame{
 					whileChatting();
 				}
 				catch(IOException ioException){
-					showMessage("\n Server ended the connection! ");
+					showMessage("\nServer ended the connection! ");
 				}finally{
 					closeCrap();
 				}
@@ -67,7 +67,7 @@ public class Server extends JFrame{
 		output = new ObjectOutputStream(connection.getOutputStream());
 		output.flush();
 		input  = new ObjectInputStream(connection.getInputStream());
-		showMessage("\n Streams are now setup! \n");
+		showMessage("\nStreams are now setup! \n");
 	}
 	
 	//during the chat conversation
@@ -80,13 +80,13 @@ public class Server extends JFrame{
 				message = (String) input.readObject();
 				showMessage("\n" + message);
 			}catch(ClassNotFoundException classNotFoundException){
-				showMessage("\n idk wtf that user sent!");
+				showMessage("\nidk wtf that user sent!");
 			}
 		}while(!message.equals("CLIENT - END"));
 	}
 	// close streams and sockets after you are done chatting
 	private void closeCrap(){
-		showMessage("\n Closing Connections... \n");
+		showMessage("\nClosing Connections... \n");
 		ableToType(false);
 		try{
 			output.close();
@@ -104,7 +104,7 @@ public class Server extends JFrame{
 			output.flush();
 			showMessage("\nSERVER - " + message);
 		}catch(IOException ioException){
-			chatWindow.append("\n ERROR: DUDE I CAN'T SEND THAT MESSAGE");
+			chatWindow.append("\nERROR: DUDE I CAN'T SEND THAT MESSAGE");
 		}
 	}
 	
