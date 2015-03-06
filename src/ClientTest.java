@@ -3,9 +3,6 @@ import javax.swing.JOptionPane;
 
 public class ClientTest {
 
-	public void userName(){
-		
-	}
 		private final static String userName = JOptionPane.showInputDialog(null, "Enter username");
 		public static String getUserName() {
 		      return userName;
