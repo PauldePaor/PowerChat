@@ -5,6 +5,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import sun.awt.WindowClosingListener;
+
 public class Client extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
@@ -16,12 +18,19 @@ public class Client extends JFrame{
 	private String serverIP;
 	private Socket connection;
 	public String userName = "";
+	private JTextField sendFiles;
+	private JButton send;
 	
 	public Client(String host){
 		super("PowerChat Client");
 		serverIP = host;
 		userText = new JTextField();
+		sendFiles = new JTextField();
+		send = new JButton();
+		sendFiles.setEditable(false);
 		userText.setEditable(false);
+		send = new JButton("Send");
+		send.setBounds(235,120,65,50);
 		userText.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent event){
@@ -30,7 +39,25 @@ public class Client extends JFrame{
 				}
 			  }
 			);
+		sendFiles.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent event){
+						sendFiles();
+						sendFiles.setText("Files");
+					}
+				  }
+				);
+		send.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent event){
+						send();
+						send.setText("Send");
+					}
+				  }
+				);
 			add(userText, BorderLayout.NORTH);
+			add(sendFiles, BorderLayout.SOUTH);
+			add(send);
 			chatWindow = new JTextArea();
 			add(new JScrollPane(chatWindow), BorderLayout.CENTER);
 			chatWindow.setEditable(false);
@@ -106,6 +133,16 @@ public class Client extends JFrame{
 		}
 	}
 	
+	//send files
+	private void sendFiles(){
+		
+	}
+	
+	//send files
+	private void send(){
+		
+	}
+	
 	//change update
 	private void showMessage(final String m){
 		SwingUtilities.invokeLater(
@@ -115,6 +152,43 @@ public class Client extends JFrame{
 				}
 			}
 		);
+	}
+	
+	//user chat status
+	private void sendStatus(int status)
+	{
+		try {
+			switch(status) {
+				case 0:
+					status = 1;//online
+				break;
+				case 1:
+					status = 3;//busy
+				break;
+				case 2:
+					status = 2;//offline
+				break;
+				default:
+					status = 4;//idle
+			}
+
+			sendMessage(message, message);
+		}
+		catch(Exception e) { System.exit(0);}
+	}
+	
+	//close window prompt
+	public void windowClosing(WindowEvent e)
+	{
+		if(JOptionPane.showConfirmDialog(chatWindow,
+					"Are you sure you want to quit?",
+					"Quit ",
+					JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE,
+					null) == JOptionPane.YES_OPTION) {
+		
+			System.exit(0);
+		}
 	}
 	
 	//gives user permission to type
