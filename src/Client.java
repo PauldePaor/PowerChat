@@ -2,10 +2,9 @@ import java.io.*;
 import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
-
 import sun.awt.WindowClosingListener;
+
 
 public class Client extends JFrame{
 	
@@ -18,16 +17,15 @@ public class Client extends JFrame{
 	private String serverIP;
 	private Socket connection;
 	public String userName = "";
-	private JTextField sendFiles;
+	private JFileChooser sendFiles;
 	private JButton send;
 	
 	public Client(String host){
 		super("PowerChat Client");
 		serverIP = host;
 		userText = new JTextField();
-		sendFiles = new JTextField();
-		send = new JButton();
-		sendFiles.setEditable(false);
+		//sendFiles = new JFileChooser();
+		//send = new JButton();
 		userText.setEditable(false);
 		send = new JButton("Send");
 		send.setBounds(235,120,65,50);
@@ -39,24 +37,8 @@ public class Client extends JFrame{
 				}
 			  }
 			);
-		sendFiles.addActionListener(
-				new ActionListener(){
-					public void actionPerformed(ActionEvent event){
-						sendFiles();
-						sendFiles.setText("Files");
-					}
-				  }
-				);
-		send.addActionListener(
-				new ActionListener(){
-					public void actionPerformed(ActionEvent event){
-						send();
-						send.setText("Send");
-					}
-				  }
-				);
 			add(userText, BorderLayout.NORTH);
-			add(sendFiles, BorderLayout.SOUTH);
+			//add(sendFiles, BorderLayout.SOUTH);
 			add(send);
 			chatWindow = new JTextArea();
 			add(new JScrollPane(chatWindow), BorderLayout.CENTER);
@@ -124,7 +106,7 @@ public class Client extends JFrame{
 	//send messages to server
 	private void sendMessage(String message, String userName){
 		try{
-			userName = ClientTest.getUserName();
+			userName = ClientTest.userName();
 			output.writeObject(userName + " - " + message);
 			output.flush();
 			showMessage("\n" + userName + " - " + message);
@@ -135,13 +117,23 @@ public class Client extends JFrame{
 	
 	//send files
 	private void sendFiles(){
-		
+	try{
+		sendFiles.setFocusable(true);
+		userName = ClientTest.userName();
+	    Socket sock = new Socket("127.0.0.1", 123456);
+	    byte[] mybytearray = new byte[1024];
+	    InputStream is = sock.getInputStream();
+	    FileOutputStream fos = new FileOutputStream(userName + " - " + "s.pdf");
+	    BufferedOutputStream bos = new BufferedOutputStream(fos);
+	    int bytesRead = is.read(mybytearray, 0, mybytearray.length);
+	    bos.write(mybytearray, 0, bytesRead);
+	    bos.close();
+	    sock.close();
+	}catch(IOException ioException){
+		chatWindow.append("\nSomething went wrong sending the file(s)");
+	}
 	}
 	
-	//send files
-	private void send(){
-		
-	}
 	
 	//change update
 	private void showMessage(final String m){
@@ -162,11 +154,11 @@ public class Client extends JFrame{
 				case 0:
 					status = 1;//online
 				break;
-				case 1:
-					status = 3;//busy
-				break;
 				case 2:
 					status = 2;//offline
+				break;
+				case 1:
+					status = 3;//busy
 				break;
 				default:
 					status = 4;//idle

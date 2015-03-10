@@ -108,6 +108,27 @@ public class Server extends JFrame{
 		}
 	}
 	
+	//send files
+	private void sendFiles(){
+		try{
+		    ServerSocket servsock = new ServerSocket(123456);
+		    File myFile = new File("s.pdf");
+		    while (true) {
+		      Socket sock = servsock.accept();
+		      byte[] mybytearray = new byte[(int) myFile.length()];
+		      BufferedInputStream bis = new BufferedInputStream(new FileInputStream(myFile));
+		      bis.read(mybytearray, 0, mybytearray.length);
+		      OutputStream os = sock.getOutputStream();
+		      os.write(mybytearray, 0, mybytearray.length);
+		      os.flush();
+		      bis.close();
+		      servsock.close();
+		      sock.close();
+		    }}catch(IOException ioException){
+			chatWindow.append("\nERROR: DUDE I CAN'T SEND THAT FILE");
+		}
+	}
+	
 	//updates chatWindow
 	private void showMessage(final String text){
 		SwingUtilities.invokeLater(
