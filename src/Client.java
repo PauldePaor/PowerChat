@@ -2,8 +2,11 @@ import java.io.*;
 import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import sun.awt.WindowClosingListener;
+import sun.misc.IOUtils;
 
 
 public class Client extends JFrame{
@@ -38,7 +41,7 @@ public class Client extends JFrame{
 			  }
 			);
 			add(userText, BorderLayout.NORTH);
-			//add(sendFiles, BorderLayout.SOUTH);
+			add(sendFiles, BorderLayout.SOUTH);
 			add(send);
 			chatWindow = new JTextArea();
 			add(new JScrollPane(chatWindow), BorderLayout.CENTER);
@@ -123,7 +126,8 @@ public class Client extends JFrame{
 	    Socket sock = new Socket("127.0.0.1", 123456);
 	    byte[] mybytearray = new byte[1024];
 	    InputStream is = sock.getInputStream();
-	    FileOutputStream fos = new FileOutputStream(userName + " - " + "s.pdf");
+	    FileOutputStream fos = new FileOutputStream(userName + " - " + sendFiles.getSelectedFile());
+	    //IOUtils.copy(fos,sock);
 	    BufferedOutputStream bos = new BufferedOutputStream(fos);
 	    int bytesRead = is.read(mybytearray, 0, mybytearray.length);
 	    bos.write(mybytearray, 0, bytesRead);
