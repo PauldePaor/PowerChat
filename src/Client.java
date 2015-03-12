@@ -41,8 +41,8 @@ public class Client extends JFrame{
 			  }
 			);
 			add(userText, BorderLayout.NORTH);
-			add(sendFiles, BorderLayout.SOUTH);
-			add(send);
+			//add(sendFiles, BorderLayout.SOUTH);
+			//add(send);
 			chatWindow = new JTextArea();
 			add(new JScrollPane(chatWindow), BorderLayout.CENTER);
 			chatWindow.setEditable(false);
@@ -109,7 +109,7 @@ public class Client extends JFrame{
 	//send messages to server
 	private void sendMessage(String message, String userName){
 		try{
-			userName = ClientTest.userName();
+			userName = ClientTest.getUsername();
 			output.writeObject(userName + " - " + message);
 			output.flush();
 			showMessage("\n" + userName + " - " + message);
@@ -119,7 +119,7 @@ public class Client extends JFrame{
 	}
 	
 	//send files
-	private void sendFiles(){
+	/*private void sendFiles(){
 	try{
 		sendFiles.setFocusable(true);
 		userName = ClientTest.userName();
@@ -136,7 +136,7 @@ public class Client extends JFrame{
 	}catch(IOException ioException){
 		chatWindow.append("\nSomething went wrong sending the file(s)");
 	}
-	}
+	}*/
 	
 	
 	//change update
